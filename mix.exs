@@ -4,19 +4,23 @@ defmodule PhoenixLiveReload.Mixfile do
   @version "1.1.6"
 
   def project do
-    [app: :phoenix_live_reload,
-     version: @version,
-     elixir: "~> 1.3",
-     deps: deps(),
+    [
+      app: :phoenix_live_reload,
+      version: @version,
+      elixir: "~> 1.3",
+      deps: deps(),
 
-     # Hex
-     description: "Provides live-reload functionality for Phoenix",
-     package: package(),
+      # Hex
+      description: "Provides live-reload functionality for Phoenix",
+      package: package(),
 
-     # Docs
-     name: "Phoenix Live-Reload",
-     docs: [source_ref: "v#{@version}",
-            source_url: "https://github.com/phoenixframework/phoenix_live_reload"]]
+      # Docs
+      name: "Phoenix Live-Reload",
+      docs: [
+        source_ref: "v#{@version}",
+        source_url: "https://github.com/phoenixframework/phoenix_live_reload"
+      ]
+    ]
   end
 
   defp package do
@@ -36,10 +40,11 @@ defmodule PhoenixLiveReload.Mixfile do
 
   defp deps do
     [
-      {:phoenix, "~> 1.0 or ~> 1.2 or ~> 1.3"},
-      {:ex_doc, "~> 0.19", only: :docs},
+      {:phoenix, github: "phoenixframework/phoenix"},
+      {:ex_doc, "~> 0.19.1", only: :docs},
       {:earmark, ">= 0.0.0", only: :docs},
       {:file_system, "~> 0.2.1 or ~> 0.3"},
+      {:jason, "~> 1.1"}
     ]
   end
 end

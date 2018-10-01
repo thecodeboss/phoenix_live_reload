@@ -53,7 +53,7 @@ defmodule Phoenix.LiveReloader do
   @external_resource phoenix_path
   @external_resource reload_path
 
-  @html_before  """
+  @html_before """
   <html><body>
   <script>
     #{File.read!(phoenix_path)}
@@ -69,7 +69,7 @@ defmodule Phoenix.LiveReloader do
     opts
   end
 
-  def call(%Plug.Conn{path_info: ["phoenix", "live_reload", "frame"]} = conn , _) do
+  def call(%Plug.Conn{path_info: ["phoenix", "live_reload", "frame"]} = conn, _) do
     endpoint = conn.private.phoenix_endpoint
     config = endpoint.config(:live_reload)
     url = config[:url] || endpoint.path("/phoenix/live_reload/socket")
@@ -88,7 +88,8 @@ defmodule Phoenix.LiveReloader do
 
   def call(conn, _) do
     endpoint = conn.private.phoenix_endpoint
-    patterns = get_in endpoint.config(:live_reload), [:patterns]
+    patterns = get_in(endpoint.config(:live_reload), [:patterns])
+
     if patterns && patterns != [] do
       before_send_inject_reloader(conn, endpoint)
     else
@@ -100,10 +101,11 @@ defmodule Phoenix.LiveReloader do
     register_before_send(conn, fn conn ->
       if conn.resp_body != nil && html?(conn) do
         resp_body = IO.iodata_to_binary(conn.resp_body)
+
         if has_body?(resp_body) and :code.is_loaded(endpoint) do
           [page | rest] = String.split(resp_body, "</body>")
           body = page <> reload_assets_tag(conn) <> Enum.join(["</body>" | rest], "")
-          put_in conn.resp_body, body
+          put_in(conn.resp_body, body)
         else
           conn
         end
@@ -124,6 +126,7 @@ defmodule Phoenix.LiveReloader do
 
   defp reload_assets_tag(conn) do
     path = conn.private.phoenix_endpoint.path("/phoenix/live_reload/frame")
+
     """
     <iframe src="#{path}" style="display: none;"></iframe>
     """

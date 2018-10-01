@@ -1,26 +1,37 @@
-Application.put_env(:phoenix_live_reload, MyApp.Endpoint,
+Application.put_env(
+  :phoenix_live_reload,
+  MyApp.Endpoint,
   pubsub: [adapter: Phoenix.PubSub.PG2, name: Phoenix.LiveReloader.PubSub],
-  live_reload:
-    [url: "ws://localhost:4000",
-     patterns: [
-       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
-       ~r{web/views/.*(ex)$},
-       ~r{web/templates/.*(eex)$}
-     ]])
+  live_reload: [
+    url: "ws://localhost:4000",
+    patterns: [
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
+      ~r{web/views/.*(ex)$},
+      ~r{web/templates/.*(eex)$}
+    ]
+  ]
+)
 
-Application.put_env(:phoenix_live_reload, MyApp.EndpointScript, [
+Application.put_env(
+  :phoenix_live_reload,
+  MyApp.EndpointScript,
   live_reload: [
     url: "ws://localhost:4000",
     patterns: [~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$}]
   ],
-  url: [path: "/foo/bar"],
-])
+  url: [path: "/foo/bar"]
+)
 
 defmodule MyApp.Endpoint do
   use Phoenix.Endpoint, otp_app: :phoenix_live_reload
+
+  socket("/socket", Phoenix.LiveReloader.Socket, websocket: true, longpoll: false)
 end
+
 defmodule MyApp.EndpointScript do
   use Phoenix.Endpoint, otp_app: :phoenix_live_reload
+
+  socket("/socket", Phoenix.LiveReloader.Socket, websocket: true, longpoll: false)
 end
 
 MyApp.Endpoint.start_link()

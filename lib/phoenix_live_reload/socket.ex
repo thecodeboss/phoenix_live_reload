@@ -4,10 +4,7 @@ defmodule Phoenix.LiveReloader.Socket do
   """
 
   use Phoenix.Socket, log: false
-  channel "phoenix:live_reload", Phoenix.LiveReloader.Channel
-
-  transport :websocket, Phoenix.Transports.WebSocket
-  transport :longpoll, Phoenix.Transports.LongPoll
+  channel("phoenix:live_reload", Phoenix.LiveReloader.Channel)
 
   def connect(_params, socket), do: {:ok, socket}
 
